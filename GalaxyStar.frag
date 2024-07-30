@@ -87,9 +87,10 @@ void main(){
     }
 
     //----------
+    float bg_spd = u_time * .25;
     for(int i = 0; i < 4; i ++){
 
-        uv *= mat2(cos(.75),-sin(.75),sin(.75),cos(.75));
+        uv *= mat2(cos(.75 + bg_spd),-sin(.75 + bg_spd),sin(.75 + bg_spd),cos(.75 + bg_spd));
 
         uv = fract(uv * 2.) - 0.5;
 
