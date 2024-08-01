@@ -12,21 +12,11 @@ float sdfStar(vec2 uv){
     return pow(d + sdfSphere(uv,2.,2.),1.25);
 }
 
-float sdfSquare(vec2 uv){
-    return (length(uv.y - uv.x) + length(uv.y + uv.x));
-}
-
 float sdfHexagon(vec2 uv){
     return (length(uv.y - uv.x) + length(uv.y + uv.x) + length( uv.x));
 }
 
 vec3 palette(float t){
-    /*
-    vec3 a = vec3(0.1,0.8,0.1);
-    vec3 b = vec3(1.,.8,.5);
-    vec3 c = vec3(1.,1.,1.);
-    vec3 d = vec3(2.,0.,0.1);
-    */
     vec3 a = vec3(.5,.5,.5);
     vec3 b = vec3(.5,.5,.5);
     vec3 c = vec3(1.,1.,1.);
@@ -44,28 +34,21 @@ void main(){
     uv *= mat2(cos(.8),-sin(.8),sin(.8),cos(.8));
 
     //Hexagon follow mouse
-    uvMouse = (gl_FragCoord.xy / u_resolution) - .5;//-= (u_mouse / u_resolution) - .5;
+    uvMouse = (gl_FragCoord.xy / u_resolution) - .5;
 
     d1 = sdfHexagon(uvMouse);
 
     d1 = sin(d1 * 4. - spd);
 
-
     vec3 col1 = palette(d1 + sin(u_time));
 
-
     //Square bg
-    for(float i = 0.; i < 4.; i ++){
-
+    for(float i = 0.; i < 5.; i ++){
         uv = fract(uv * 1.1) - .5;
-        float angle = u_time / 2.;
-        //uv *= mat2(cos(angle),-sin(angle),sin(angle),cos(angle));
 
         uv *= (1. + sin(spd) * 0.2);
-        //uv /= (1. + cos(spd) * 0.2);
-        
 
-        d0 = sdfStar(uv);//sdfSquare(uv); 
+        d0 = sdfStar(uv);
         d0 = sin(d0 * 5. + spd) / 2.;
     
         vec3 col0 = palette(d0);

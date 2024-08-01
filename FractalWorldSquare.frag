@@ -8,7 +8,7 @@ vec3 palette(float t){
     vec3 a = vec3(.5,.75,.75);
     vec3 b = vec3(.5,.5,.5);
     vec3 c = vec3(1.,1.,1.);
-    vec3 d = vec3(0.1725, 0.5725, 0.8);//vec3(0.263,0.416,0.557);
+    vec3 d = vec3(0.1725, 0.5725, 0.8);
     return a - b - b * cos(6.28318 - (c * t + d));
 }
 

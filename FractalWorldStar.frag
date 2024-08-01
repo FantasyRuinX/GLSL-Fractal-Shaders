@@ -32,9 +32,6 @@ void main() {
     vec3 final_colour,col;
     float d,angle = u_time * 2.;
 
-    //uv *= mat2(cos(.8),-sin(.8),sin(.8),cos(.8));
-
-
     for(int i = 0; i < 4; i++){
 
         //Wave

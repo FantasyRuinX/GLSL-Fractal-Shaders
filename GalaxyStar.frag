@@ -10,11 +10,6 @@ vec2 rand(vec2 co){
     )*2.0-1.0;
 }
 
-float sdfSquare(vec2 uv, float size){
-    return length(max(abs(uv) - 1. * size, 0.));
-}
-
-
 float sdfSphere(vec2 uv, float size, float intencity){
     return pow(length(uv) * size,intencity);
 }
@@ -29,7 +24,7 @@ float sdfWave(vec2 uv,float spd){
     vec2 uvOriginal = uv;
     float final_distance,angle = u_time * .5;
 
-    //uv *= mat2(cos(angle),-sin(angle),sin(angle),cos(angle));
+    uv *= mat2(cos(angle),-sin(angle),sin(angle),cos(angle));
     float d0 = length(uv.x - sin(angle + uv.y * 20.) * .1);
     float d1 = length(uv.y + cos(angle - uv.x * 20.) * .21);
 
@@ -82,7 +77,6 @@ void main(){
     grainLine = pow(grainLine,.175);
 
     final_colour /= grainLine;
-    //final_colour *= grainLine;
 
     }
 
