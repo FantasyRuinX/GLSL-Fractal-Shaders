@@ -27,9 +27,11 @@ float map(vec3 point,float size){
     point.z += u_time;
 
     point.xy = fract(point.xy) - 0.5;
-    point.z = mod(point.z,1.) - 0.5;
+    point.z = mod(point.z,1.) - .5;
 
-    return sdHexPrism(point,vec2(size)) * HexagonDiamond3D(point,size * .5);
+    float dist = sdHexPrism(point,vec2(size)) * HexagonDiamond3D(point,size * .5);
+
+    return min(dist , (length(fract(point * 2.) - 0.5)- 0.12));
 }
 
 vec3 palette(float t){
@@ -42,7 +44,7 @@ vec3 palette(float t){
 
 void main(){
     vec2 uv = (gl_FragCoord.xy * 2. - u_resolution) / u_resolution.y;
-    //uv -= (u_mouse / u_resolution) - .5;
+    uv -= (u_mouse / u_resolution) - .5;
 
     float spd = u_time * 1.;
     vec3 final_colour = vec3(1.);
@@ -56,6 +58,7 @@ void main(){
         vec3 point = world_origin + ray_dir * travelled;
         float uvAngle = (point.z + spd) * .2;
         point.xy *= mat2(cos(uvAngle),-sin(uvAngle),sin(uvAngle),cos(-uvAngle));
+        
         float dist = map(point,0.025);
 
         travelled += dist;
