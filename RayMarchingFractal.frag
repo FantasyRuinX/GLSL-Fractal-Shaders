@@ -6,18 +6,29 @@ uniform vec2 u_mouse;
 
 float HexagonDiamond3D(vec3 point,float size){
     point = abs(point);
-    return length(max(point.yz,0.) + max(point.x,0.)) - size;
+    return length(max(point.yz,0.) - max(point.x,0.)) - size;
 }
 
+float sdHexPrism( vec3 p, vec2 h )
+{
+  const vec3 k = vec3(-0.8660254, 0.5, 0.57735);
+  p = abs(p);
+  p.xy -= 2.0*min(dot(k.xy, p.xy), 0.0)*k.xy;
+  vec2 d = vec2(
+       length(p.xy-vec2(clamp(p.x,-k.z*h.x,k.z*h.x), h.x))*sign(p.y-h.x),
+       p.z-h.y );
+  return min(max(d.x,d.y),0.0) + length(max(d,0.0));
+}
 
 float map(vec3 point,float size){
 
+    //point.z += sin(point.z + u_time);
     point.z += u_time;
 
-    point.xy = fract(point.xy * .5) - 0.5;
-    point.z = mod(point.z,0.25) - 0.125;
+    point.xy = fract(point.xy) - 0.5;
+    point.z = mod(point.z,0.5) - 0.25;
 
-    return HexagonDiamond3D(point,size);
+    return sdHexPrism(point,vec2(size));
 }
 
 vec3 palette(float t){
@@ -30,7 +41,7 @@ vec3 palette(float t){
 
 void main(){
     vec2 uv = (gl_FragCoord.xy * 2. - u_resolution) / u_resolution.y;
-    vec2 uv1 = uv;
+    uv -= (u_mouse / u_resolution) - .5;
 
     float spd = u_time * 1.;
     vec3 final_colour = vec3(1.);
@@ -40,11 +51,11 @@ void main(){
     float travelled = 0.;
 
     int i;
-    for(int i = 0; i < 100; i ++){
+    for(int i = 0; i < 75; i ++){
         vec3 point = world_origin + ray_dir * travelled;
         float uvAngle = (point.z + spd) * .2;
         point.xy *= mat2(cos(uvAngle),-sin(uvAngle),sin(uvAngle),cos(-uvAngle));
-        float dist = map(point,0.125);
+        float dist = map(point,0.05);
 
         travelled += dist;
         if (dist < 0.001 || travelled > 100.) break;
