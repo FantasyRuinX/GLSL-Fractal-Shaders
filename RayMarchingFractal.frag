@@ -20,6 +20,11 @@ float sdHexPrism( vec3 p, vec2 h )
   return min(max(d.x,d.y),0.0) + length(max(d,0.0));
 }
 
+float smin(float a, float b, float k){
+    float h = max(k - abs(a - b), 0.0) / k;
+    return min(a , b) - h * h * h * k * (1. / 6.);
+}
+
 float map(vec3 point,float size){
 
     point.y -= 0.5;
@@ -30,8 +35,9 @@ float map(vec3 point,float size){
     point.z = mod(point.z,1.) - .5;
 
     float dist = sdHexPrism(point,vec2(size)) * HexagonDiamond3D(point,size * .5);
+    dist = min(dist , (length(fract(point * 2.) - 0.5)- 0.12));
 
-    return min(dist , (length(fract(point * 2.) - 0.5)- 0.12));
+    return dist;
 }
 
 vec3 palette(float t){
@@ -39,7 +45,7 @@ vec3 palette(float t){
     vec3 b = vec3(0.502, 0.502, 0.502);
     vec3 c = vec3(1.0, 1.0, 1.0);
     vec3 d = vec3(0.902, 0.8314, 0.2);
-    return  a + b * cos(6.5 - (c / t + d));
+    return  a + b * cos(6.5 - (c / t * d));
 }
 
 void main(){
