@@ -24,7 +24,7 @@ float map(vec3 point,float size){
 
     point.y -= 0.5;
     //point.z += sin(point.z + u_time);
-    point.z += u_time;
+    point.z += u_time * 0.5;
 
     point.xy = fract(point.xy) - 0.5;
     point.z = mod(point.z,1.) - .5;
@@ -35,11 +35,11 @@ float map(vec3 point,float size){
 }
 
 vec3 palette(float t){
-    vec3 a = vec3(.5,.5,.5);
-    vec3 b = vec3(.5,.5,.5);
-    vec3 c = vec3(1.,1.,1.);
-    vec3 d = vec3(0.2, 0.5059, 0.902);
-    return  a - b * cos(6.28318 - (c * t + d));
+    vec3 a = vec3(0.502, 0.502, 0.502);
+    vec3 b = vec3(0.502, 0.502, 0.502);
+    vec3 c = vec3(1.0, 1.0, 1.0);
+    vec3 d = vec3(0.902, 0.8314, 0.2);
+    return  a + b * cos(6.5 - (c / t + d));
 }
 
 void main(){
