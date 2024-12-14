@@ -28,10 +28,10 @@ float smin(float a, float b, float k){
 float map(vec3 point,float size){
 
     point.y -= 0.5;
-    //point.z += sin(point.z + u_time);
+    point.z += sin(length(point)+ u_time * 2.);
     point.z += u_time * 0.5;
 
-    point.xy = fract(point.xy) - 0.5;
+    point.xy = fract(point.xy * 1.) - 0.5;
     point.z = mod(point.z,1.) - .5;
 
     float dist = sdHexPrism(point,vec2(size)) * HexagonDiamond3D(point,size * 1.);
