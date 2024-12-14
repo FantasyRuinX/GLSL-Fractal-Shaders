@@ -4,6 +4,13 @@ uniform float u_time;
 uniform vec2 u_resolution;
 uniform vec2 u_mouse;
 
+vec3 palette(float t){
+    vec3 a = vec3(0.4824, 0.6275, 0.4824);
+    vec3 b = vec3(0.5137, 0.5137, 0.5137);
+    vec3 c = vec3(0.5569, 0.7529, 0.7255);
+    vec3 d = vec3(0.902, 0.8314, 0.2);
+    return  a + b * cos(6.5 - (c / t * d));
+}
 
 float sdRoundBox( vec3 p, vec3 b, float r )
 {
@@ -60,16 +67,16 @@ vec3 lighting(vec3 p, vec3 normal, vec3 lightPos, vec3 viewPos) {
     vec3 lightDir = normalize(lightPos - p);
     float diff = max(dot(normal, lightDir), 0.0);
 
-    vec3 viewDir = normalize(viewPos - p);
-    vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
+    //vec3 viewDir = normalize(viewPos - p);
+    //vec3 reflectDir = reflect(-lightDir, normal);
+    //float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
 
-    vec3 ambient = 0.25 * vec3(0.2627, 0.702, 0.7608);
+    //vec3 ambient = 0.25 * vec3(0.2627, 0.702, 0.7608);
 
     vec3 diffuse = diff * vec3(1.0, 1.0, 1.0);
-    vec3 specular = spec * vec3(1.0, 1.0, 1.0);
+    //vec3 specular = spec * vec3(1.0, 1.0, 1.0);
 
-    return ambient + diffuse + specular;
+    return diffuse;
 }
 
 void main(){
